@@ -4,18 +4,12 @@ using UnityEngine;
 
 public class Car_driver : MonoBehaviour
 {
-    [SerializeField] float steerSpeed = 0f;
-    [SerializeField] float moveSpeed = 0f;
- //   private void OnCollisionEnter2D(Collision2D collision2D)
- //   {
- //       Destroy(collision2D.gameObject);
- //   }
+    [SerializeField] float steerSpeed;
+    [SerializeField] float moveSpeed;
+    [SerializeField] float slowSpeed = 15f;
+    [SerializeField] float boostSpeed = 30f;
 
     // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()
@@ -24,8 +18,16 @@ public class Car_driver : MonoBehaviour
         float moveAmount = Input.GetAxis("Vertical") * moveSpeed * Time.deltaTime;
         transform.Rotate(0, 0, -steerAmount);
         transform.Translate(0, moveAmount, 0);
-
-        
-
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Boost")
+        {
+            moveSpeed = boostSpeed;
+        }
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        moveSpeed = slowSpeed;
     }
 }
